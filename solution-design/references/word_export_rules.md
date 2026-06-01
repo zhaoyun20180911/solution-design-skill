@@ -1,15 +1,37 @@
 # Word Export Rules
 
-The formal proposal is drafted as Markdown source first, then exported to Word after user confirmation.
+The final proposal is drafted as Markdown source and exported to Word in one final step after the user asks for the final Word proposal.
 
 ## Preconditions
 
 Before export:
 
-1. The technical route is confirmed.
-2. The solution outline is confirmed.
-3. The Markdown source is confirmed.
-4. `check_formal_solution.py` and `check_markdown_math.py` have been run or the user has been reminded to run them.
+1. `project_anchor.md` exists or its content has been incorporated in the conversation.
+2. The technical route and framework have been confirmed.
+3. `confirmed_framework.md` exists or has just been updated.
+4. The user has asked to generate the final Word proposal.
+
+Do not add a separate Markdown confirmation gate unless the user explicitly asks to review the Markdown source before export.
+
+## Final Draft
+
+Create `solution_design.md` from the confirmed anchors and discussion. The formal proposal body must not contain:
+
+- AI process text
+- user prompt traces
+- local file paths
+- Markdown or pandoc process notes
+- self-weakening statements
+- fabricated results, citations, metrics, datasets, or conclusions
+
+Run or remind the user to run:
+
+```bash
+python scripts/check_formal_solution.py solution_design.md --lang en
+python scripts/check_markdown_math.py solution_design.md --lang en
+```
+
+Use `--lang zh` for Chinese proposals.
 
 ## Pandoc Check
 

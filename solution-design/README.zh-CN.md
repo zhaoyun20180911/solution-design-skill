@@ -2,7 +2,7 @@
 
 `solution-design` 是一个用于算法类、科研类和工程类技术方案设计的 Codex Skill。它不是通用写作模板，而是一个讨论迭代式方案设计工作流。
 
-该 Skill 帮助用户从初始主题出发，逐步完成项目画像、调研资料包、技术路线确认、方案框架冻结、正式 Markdown 方案正文和 Word 导出。
+该 Skill 在设计过程中只保留两个本地锚点：前期调研和项目画像形成 `project_anchor.md`，用户确认技术路线和方案框架后形成 `confirmed_framework.md`。中间的路线讨论主要在对话中完成，不保存本地讨论日志。当用户要求生成最终 Word 方案时，直接生成正式 Markdown 源文件并导出 Word。
 
 ## 适用场景
 
@@ -11,7 +11,7 @@
 - 工程方案报告
 - 科研项目方案框架
 - 技术路线比较与选择
-- Markdown 初稿确认后的 Word 方案准备
+- Word 方案准备
 
 ## 不适用场景
 
@@ -26,45 +26,22 @@
 ## 工作流程
 
 1. 检测用户语言并输出对应启动说明。
-2. 创建项目画像。
-3. 创建调研资料包，整理候选路线和学习资料。
-4. 请用户确认技术路线。
-5. 创建方案框架和技术框架。
-6. 请用户确认方案框架。
-7. 创建正式方案 Markdown 源文件。
-8. 运行正式方案禁用语检查和 Markdown 数学变量检查。
-9. 请用户确认 Markdown 初稿。
-10. 使用 pandoc 导出 Word，并明确提示最终 Word 路径。
+2. 基于初始理解、调研、用户重点要求、约束条件、候选路线和待确认问题，形成 `project_anchor.md`。
+3. 在对话中讨论技术路线和方案框架，不保存本地讨论日志。
+4. 请用户确认选定的技术路线和方案框架。
+5. 将确认后的路线、模块边界、输入输出、指标体系、验证逻辑和方案章节框架保存到 `confirmed_framework.md`。
+6. 当用户要求生成最终 Word 方案时，生成 `solution_design.md`，运行或提醒运行检查脚本，并使用 pandoc 导出 Word。
 
-## 输出模式
-
-默认使用 full mode，因为方案设计需要保留调研、框架和用户确认过程。
+## 输出文件
 
 ```text
 {project_name}_solution_design/
-├── project_profile.md
-├── project_research_pack.md
-├── solution_outline.md
+├── project_anchor.md
+├── confirmed_framework.md
 ├── solution_design.md
-├── change_log.md
 └── exports/
     └── {project_name}_方案设计.docx
 ```
-
-如果用户明确表示“只要 Word”“不要中间文件”“最终只输出 docx”，使用 clean mode：
-
-```text
-{project_name}_solution_design/
-├── exports/
-└── .solution-design/
-    ├── project_profile.md
-    ├── project_research_pack.md
-    ├── solution_outline.md
-    ├── solution_design.md
-    └── change_log.md
-```
-
-clean mode 下中间文件仍然保留，只是放入隐藏目录 `.solution-design/`。
 
 ## 安装
 
@@ -74,26 +51,26 @@ clean mode 下中间文件仍然保留，只是放入隐藏目录 `.solution-des
 ~/.codex/skills/solution-design/
 ```
 
-Skill 本体文件不应复制到每个用户项目目录中。
+Skill 本体文件不应复制到每一个用户项目目录中。
 
 ## 运行依赖
 
-从用户提出需求到确认 Markdown 方案正文，本 Skill 不需要 Codex 之外的额外软件。
+从用户提出需求到生成 Markdown 方案源文件，本 Skill 不需要 Codex 之外的额外软件。
 
-如果要运行 Skill 自带的辅助脚本，Codex 需要能访问一个 Python 3 解释器。该解释器可能以 `python`、`python3`、`py`，或运行环境提供的 Python 可执行文件形式存在。脚本只使用 Python standard library（Python 标准库），正常使用不需要安装 PyYAML、python-docx、pypandoc 或其他 Python 包。
+如果要运行 Skill 自带的辅助脚本，Codex 需要能访问一个 Python 3 解释器。该解释器可能以 `python`、`python3`、`py`，或运行环境提供的 Python 可执行文件形式存在。脚本只使用 Python 标准库，正常使用不需要安装 PyYAML、python-docx、pypandoc 或其他 Python 包。
 
-如果没有 Python，工作流也不应中断。脚本只是便捷工具，不是硬性运行门槛：Codex 应直接创建或更新项目目录和 Markdown 文件，按 references 中的规则人工检查正文，并在 Markdown 初稿确认后直接运行 pandoc 导出 Word。
+如果没有 Python，工作流也不应中断。脚本只是便捷工具，不是硬性运行门槛：Codex 应直接创建或更新项目目录和 Markdown 文件，按 references 中的规则人工检查正文，并在最终 Markdown 源文件生成后直接运行 pandoc 导出 Word。
 
-最终输出 Word 时，Markdown 转 Word 需要 pandoc。如果没有 pandoc，Skill 应保留已确认的 Markdown 源文件，并提示用户 Word 导出需要等 pandoc 安装后再执行。
+最终输出 Word 时，Markdown 转 Word 需要 pandoc。如果没有 pandoc，Skill 应保留已生成的 Markdown 源文件，并提示用户 Word 导出需要等 pandoc 安装后再执行。
 
 ## 触发示例
 
 ```text
-做一个关于某工程系统的方案
-写一个某算法模块的技术方案
-写一个某科研项目的方案框架
-帮我设计某项目的方案框架
-我要做一个 XXX 的 Word 方案
+写一个技术方案
+帮我设计项目方案框架
+我要生成一个 Word 方案
+设计一个算法方案
+准备一份工程技术方案
 ```
 
 ## 脚本用法
@@ -101,8 +78,8 @@ Skill 本体文件不应复制到每个用户项目目录中。
 初始化方案项目：
 
 ```bash
-python scripts/init_solution_project.py "项目名称" --mode full --lang zh
-python scripts/init_solution_project.py "Project Name" --mode clean --lang en
+python scripts/init_solution_project.py "项目名称" --lang zh
+python scripts/init_solution_project.py "Project Name" --lang en
 ```
 
 检查正式方案正文禁用语：
@@ -124,7 +101,7 @@ python scripts/export_docx.py solution_design.md --project-name "项目名称" -
 python scripts/export_docx.py solution_design.md --reference path/to/reference.docx --project-name "项目名称" --lang zh
 ```
 
-如果没有 Python 但已安装 pandoc，可直接运行 pandoc 导出：
+如果没有 Python 但已安装 pandoc，可直接运行：
 
 ```bash
 pandoc solution_design.md -o exports/项目名称_方案设计.docx
@@ -132,7 +109,7 @@ pandoc solution_design.md -o exports/项目名称_方案设计.docx
 
 Word 导出依赖 pandoc。Windows 可安装 `.msi`，macOS 可安装 `.pkg` 或使用 Homebrew，Linux 可使用系统包管理器。
 
-## 文件生成反馈机制
+## 文件反馈机制
 
 每次生成或更新关键文件时，必须告知用户：
 

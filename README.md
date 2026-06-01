@@ -10,7 +10,13 @@ solution-design/
 
 ## What It Does
 
-`solution-design` helps Codex guide algorithm, research, and engineering solution-design work from an initial topic to a confirmed technical route, a frozen outline, a formal Markdown proposal, and Word export preparation.
+`solution-design` helps Codex guide algorithm, research, and engineering solution-design work from an initial topic to:
+
+- a researched local project anchor
+- an interactive route and framework discussion in chat
+- a confirmed framework anchor
+- a final Markdown proposal source
+- a Word proposal exported with pandoc
 
 ## Install With Codex
 
@@ -30,6 +36,6 @@ Restart Codex after installation so the new skill is loaded.
 
 ## Runtime Notes
 
-The solution-design workflow itself does not require extra Python packages. Helper scripts use only the Python standard library. Pandoc is required only for final Markdown-to-Word export.
+The discussion workflow does not require extra Python packages. Helper scripts use only the Python standard library. Pandoc is required only for final Markdown-to-Word export.
 
-See `solution-design/README.md` and `solution-design/README.zh-CN.md` for full usage details.
+See `solution-design/README.md` and `solution-design/README.zh-CN.md` for usage details.

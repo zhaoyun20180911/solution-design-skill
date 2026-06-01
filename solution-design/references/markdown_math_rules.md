@@ -7,7 +7,7 @@ Use Markdown math notation in formal proposal source files.
 - Inline mathematical variables use `$...$`.
 - Display formulas use `$$...$$`.
 - Subscripts, superscripts, hats, bars, matrices, sets, norms, fractions, and roots must be marked as math.
-- Greek letters must be marked as math, such as `$\\alpha$`, `$\\theta$`, and `$\\sigma$`.
+- Greek letters must be marked as math, such as `$\alpha$`, `$\theta$`, and `$\sigma$`.
 - Error metrics, statistical metrics, and algorithm variables should be marked when used as variables.
 - Do not mark ordinary English words, software names, unit names, or natural-language phrases as formulas.
 

@@ -32,7 +32,7 @@ def default_output(markdown_file: Path, project_name: str | None, lang: str) -> 
 def print_missing_pandoc(lang: str, output: Path, markdown_file: Path) -> None:
     if lang == "zh":
         print("未检测到 pandoc，暂不能生成 Word 文件。")
-        print("安装提示：Windows 可安装 .msi；macOS 可安装 .pkg 或使用 Homebrew；Linux 可使用系统包管理器。")
+        print("安装提示：Windows 可安装 .msi，macOS 可安装 .pkg 或使用 Homebrew，Linux 可使用系统包管理器。")
         print(f"最终 Word 文件（尚未生成）：{output}")
         print(f"Markdown 源文件：{markdown_file}")
     else:
@@ -47,9 +47,9 @@ def print_success(lang: str, output: Path, markdown_file: Path) -> None:
         print("Word 正式方案文档已生成：")
         print(f"路径：{output}")
         print("作用：这是本次方案设计的最终 Word 交付文件，可直接打开查看和继续编辑。")
-        print("\nMarkdown 初稿也已保留：")
+        print("\nMarkdown 源文件也已保留：")
         print(f"路径：{markdown_file}")
-        print("作用：这是 Word 文档的源文件，后续如需大幅修改方案，建议优先修改该文件后重新导出 Word。")
+        print("作用：这是 Word 文档的源文件，后续如需大幅修改方案，建议先修改该文件后重新导出 Word。")
         print(f"\n最终 Word 文件位置：{output}")
     else:
         print("Formal Word proposal generated:")

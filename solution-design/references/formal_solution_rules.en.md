@@ -30,9 +30,9 @@ Avoid:
 - Markdown draft
 - AI prompt
 
-## Results and Metrics
+## Results And Metrics
 
-Do not fabricate performance, accuracy, rankings, test results, or conclusions. If real data are unavailable, describe the validation design, metric system, and required outputs.
+Do not fabricate performance, accuracy, rankings, test results, citations, datasets, benchmarks, or conclusions. If real data are unavailable, describe the validation design, metric system, and required outputs.
 
 ## Structure
 
