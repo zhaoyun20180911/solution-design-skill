@@ -1,0 +1,7 @@
+interface:
+  display_name: "Solution Design"
+  short_description: "Design technical solution proposals."
+  default_prompt: "Use $solution-design to design a technical proposal for my project."
+
+policy:
+  allow_implicit_invocation: true
