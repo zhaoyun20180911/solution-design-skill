@@ -1,8 +1,10 @@
 # solution-design
 
-`solution-design` is a Codex Skill for algorithm, research, and engineering technical solution design. It is a discussion-driven workflow, not a generic writing template.
+`solution-design` is a Codex Skill for algorithm, research, and engineering technical solution design. It is a conversation-first workflow, not a generic writing template.
 
-The skill keeps only two durable local anchors during the design process: one researched project anchor at the beginning, and one confirmed framework anchor after the user has converged the route. Ordinary route discussion happens in chat. When the user asks for the final Word proposal, the skill directly generates the formal Markdown source and exports Word.
+The skill must show enough information in chat for the user to judge the solution without opening local Markdown files. Local files are memory anchors and final writing sources.
+
+The skill includes `assets/reference.docx` as the default pandoc Word template. Edit this file in Word to tune title, heading, body, table, margin, and spacing styles.
 
 ## Use Cases
 
@@ -15,26 +17,28 @@ Use this skill for:
 - route comparison and route selection
 - Word proposal preparation
 
-Do not use it for direct algorithm implementation, simulation scripting, test-plan generation, test-report generation, fabricated results, automatic plotting, or complex docx format QA.
+Do not use it for direct algorithm implementation, simulation scripting, test-plan generation, test-report generation, fabricated results, automatic plotting, or page PNG visual QA unless the user explicitly asks.
 
 ## Workflow
 
-1. Detect user language and print the matching startup message.
-2. Build `project_anchor.md` from initial understanding, research, user priorities, constraints, candidate routes, and open questions.
-3. Discuss route choices and framework details in chat without saving local discussion logs.
-4. Ask the user to confirm the selected route and framework.
-5. Save `confirmed_framework.md` with the confirmed route, module boundaries, inputs/outputs, indicators, verification logic, and proposal framework.
-6. When the user asks for the final Word proposal, generate `solution_design.md`, run or remind the user to run the checks, and export Word with pandoc.
+1. Introduce the workflow: deep research, candidate solution, solution discussion, solution confirmation, framework discussion, framework confirmation, final Word.
+2. Show research findings, candidate routes, route trade-offs, recommended starting direction, and key questions in chat.
+3. Save `project_anchor.md` as a memory anchor after the useful content has appeared in chat.
+4. During solution discussion, end every response with the latest overall route and solution summary, then ask whether to begin framework design.
+5. After the user agrees, generate the proposal framework in chat first.
+6. Revise the framework in chat until the user approves the latest version.
+7. Save the approved framework to `confirmed_framework.md`.
+8. When the user asks for the final Word proposal, generate `solution_design.md` and export Word.
 
 ## Output Files
 
 ```text
 {project_name}_solution_design/
-├── project_anchor.md
-├── confirmed_framework.md
-├── solution_design.md
-└── exports/
-    └── {project_name}_solution_design.docx
+|-- project_anchor.md
+|-- confirmed_framework.md
+|-- solution_design.md
+`-- exports/
+    `-- {project_name}_solution_design.docx
 ```
 
 For Chinese proposals, the default Word file name is:
@@ -42,6 +46,26 @@ For Chinese proposals, the default Word file name is:
 ```text
 {project_name}_方案设计.docx
 ```
+
+## Word Output
+
+The Word export helper applies these rules where possible:
+
+- use `assets/reference.docx` first when no user `--reference` is provided
+- all visible text black
+- heading levels use SimSun/宋体
+- all table cells have no shading, including header cells
+- paragraphs inside table cells have no body-style first-line indentation
+- no page PNG visual rendering QA unless explicitly requested
+
+After export, report:
+
+- final Word path
+- Markdown source path
+- page count when available
+- table count
+- figure placeholder count
+- figure placeholder names
 
 ## Install
 
@@ -101,6 +125,8 @@ python scripts/export_docx.py solution_design.md --project-name "Project Name" -
 python scripts/export_docx.py solution_design.md --reference path/to/reference.docx --project-name "Project Name" --lang en
 ```
 
+The first command automatically uses `assets/reference.docx` when it exists.
+
 If Python is unavailable but pandoc is installed, export directly:
 
 ```bash
@@ -108,19 +134,3 @@ pandoc solution_design.md -o exports/Project_Name_solution_design.docx
 ```
 
 Pandoc is required for Word export. Install the `.msi` package on Windows, the `.pkg` package or Homebrew package on macOS, or use the system package manager on Linux.
-
-## File Feedback
-
-Whenever a key file is created or updated, the assistant must report:
-
-- file name
-- path
-- purpose
-- whether it is the final deliverable
-- next use
-
-After Word export, the assistant must separately report:
-
-```text
-Final Word file: {project_dir}/exports/{project_name}_solution_design.docx
-```

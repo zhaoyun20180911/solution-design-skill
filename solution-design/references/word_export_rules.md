@@ -7,9 +7,10 @@ The final proposal is drafted as Markdown source and exported to Word in one fin
 Before export:
 
 1. `project_anchor.md` exists or its content has been incorporated in the conversation.
-2. The technical route and framework have been confirmed.
-3. `confirmed_framework.md` exists or has just been updated.
-4. The user has asked to generate the final Word proposal.
+2. The solution direction has been discussed and confirmed.
+3. The framework has been shown in chat and approved by the user.
+4. `confirmed_framework.md` exists or has just been updated from the approved framework.
+5. The user has asked to generate the final Word proposal.
 
 Do not add a separate Markdown confirmation gate unless the user explicitly asks to review the Markdown source before export.
 
@@ -32,6 +33,19 @@ python scripts/check_markdown_math.py solution_design.md --lang en
 ```
 
 Use `--lang zh` for Chinese proposals.
+
+## Word Style Requirements
+
+Final Word output must use conservative proposal formatting:
+
+- use the bundled `assets/reference.docx` as the default pandoc reference document when no user reference docx is provided
+- all visible text black
+- all heading levels use SimSun/宋体 where possible
+- all table cells have no shading, including header cells
+- paragraphs inside table cells have no first-line indentation
+- no page PNG visual rendering QA unless the user explicitly asks
+
+Use `scripts/export_docx.py`; it first uses `assets/reference.docx` where available, then post-processes the generated `.docx` with standard-library XML operations to apply these rules where possible.
 
 ## Pandoc Check
 
@@ -57,6 +71,8 @@ Without a reference docx:
 python scripts/export_docx.py solution_design.md --project-name "Project Name" --lang en
 ```
 
+This automatically uses the bundled `assets/reference.docx` when it exists.
+
 With a user-provided reference docx:
 
 ```bash
@@ -81,7 +97,10 @@ After Word generation, clearly report:
 
 - final Word path
 - Markdown source path
-- file purpose
+- page count when available
+- number of tables
+- number of figure placeholders
+- figure placeholder names
 - whether the Word file is the final deliverable
 
 Use an explicit final line:

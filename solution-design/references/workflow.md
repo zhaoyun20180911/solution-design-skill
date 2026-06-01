@@ -2,53 +2,81 @@
 
 ## Stage 0: Activation
 
-Detect the user's language and print the matching startup message from `SKILL.md`. Explain only the active workflow boundary: this skill designs a technical solution and does not enter algorithm implementation, simulation scripting, test-plan writing, or test-report writing before the route and framework are confirmed.
+Detect the user's language and print the matching startup message from `SKILL.md`. Explain the workflow briefly as:
 
-## Stage 1: First Anchor
+1. deep research
+2. candidate solution proposal
+3. solution discussion
+4. solution confirmation
+5. framework discussion
+6. framework confirmation
+7. final Word generation
 
-Create or update `project_anchor.md` after the initial understanding and research. This file is the durable memory anchor for later discussion and final writing.
+The user should understand that chat is the main place to inspect the solution. Local files are anchors and final sources.
 
-Include:
+## Stage 1: Research And First Anchor
 
-- project topic and application scenario
-- user's priority requirements and non-negotiable constraints
-- known inputs, outputs, available materials, and assumptions
-- research basis, search keywords, candidate technologies, standards, papers, documentation, or open-source references when available
-- candidate routes and trade-offs
-- unknowns that still affect route selection
+After initial understanding and research, show substantial content in chat before creating or updating `project_anchor.md`.
 
-Do not write a long formal proposal in this stage. Ask only the questions that materially change route selection or proposal scope.
+The chat response must include:
 
-## Stage 2: Chat Discussion
+- researched project image and core problem
+- major assumptions and known constraints
+- research findings or source leads
+- candidate technical routes with trade-offs
+- recommended starting route when evidence supports one
+- key questions that affect proposal depth and route selection
 
-Discuss the route and framework in the conversation. Explain options, compare trade-offs, and converge the direction with the user.
+Then create or update `project_anchor.md` as a memory anchor. Do not tell the user to open the file to understand the content.
 
-Do not create local discussion logs for ordinary back-and-forth. Use `project_anchor.md` as the shared reference point when the discussion becomes long or complex.
+Ask focused questions such as expected page count, method difficulty, important parameters, input data, output products, operating conditions, preferred or excluded routes, and figure/table expectations.
 
-If live research is needed and no sources are available, ask for sources or search keywords instead of inventing citations.
+## Stage 2: Solution Discussion
 
-## Confirmation Gate: Framework Confirmation
+Discuss solution routes in chat. Each response in this stage must end with:
 
-Before final proposal drafting, ask the user to confirm the selected route and framework. If the user is unsure, compare routes by function, applicability, implementation difficulty, verification difficulty, input needs, output quality, and risk.
+- a concise but complete latest solution summary
+- the current recommended route
+- current assumptions
+- the next decision question
 
-## Stage 3: Second Anchor
+Ask whether the user wants to use the latest solution direction to begin proposal framework design. Do not create `confirmed_framework.md` yet.
 
-Create or update `confirmed_framework.md` only after the user confirms the route and framework.
+If the user changes a route, constraint, page target, difficulty preference, or deliverable expectation, update the summary in chat before asking for the next decision.
 
-Include:
+## Stage 3: Framework Draft In Chat
 
-- confirmed technical route and rationale
-- routes rejected or retained only as comparisons
-- module boundaries, inputs, outputs, and dependencies
-- indicator system and verification logic
-- expected figures or tables needed in the proposal
-- final proposal chapter framework and page-count guidance when useful
+Only after the user agrees to begin framework design, generate the framework in chat first.
 
-If the user later changes the route or framework, update `confirmed_framework.md` before drafting the final proposal.
+The framework shown in chat should include:
 
-## Stage 4: Final Markdown And Word
+- proposed chapter structure
+- section and subsection titles
+- what each chapter proves
+- core module boundaries
+- inputs, outputs, and dependencies
+- indicator and verification design
+- table plan
+- figure placeholders and names
+- page allocation when relevant
 
-When the user asks for the final Word proposal, directly create `solution_design.md` as the formal proposal source from `project_anchor.md`, `confirmed_framework.md`, and the confirmed discussion outcome.
+Ask whether the user approves the framework or wants modifications. If the user requests changes, revise the framework in chat and ask again.
+
+## Stage 4: Framework Confirmation And Second Anchor
+
+Only after the user clearly approves the latest framework, create or update `confirmed_framework.md`.
+
+The file must reflect the approved framework, not an earlier version. After saving, show a short confirmation in chat and state that it will be used as the writing basis for `solution_design.md`.
+
+## Stage 5: Final Markdown And Word
+
+When the user asks for the final Word proposal, directly create `solution_design.md` from:
+
+- `project_anchor.md`
+- `confirmed_framework.md`
+- the confirmed discussion outcome
+
+Do not add a new Markdown confirmation gate unless the user explicitly asks to review Markdown first.
 
 Use real project-proposal language. Do not include AI process text, user prompt traces, Markdown/Word/pandoc process notes, file paths, or self-weakening statements in the formal proposal body.
 
@@ -61,14 +89,25 @@ python scripts/check_markdown_math.py solution_design.md --lang zh
 
 Use `--lang en` for English proposals.
 
-Export Word immediately after the Markdown source is generated unless the user explicitly asks to review Markdown first:
+Export Word:
 
 ```bash
 python scripts/export_docx.py solution_design.md --project-name "Project Name" --lang en
 ```
 
-Use a user-provided reference docx when available. If no real reference docx exists, export without `--reference` and tell the user where to provide one later.
+Use a user-provided reference docx when available. If no real reference docx exists, export without `--reference`.
+
+Do not perform page PNG visual rendering QA after export unless the user explicitly asks.
+
+After export, report:
+
+- final Word path
+- Markdown source path
+- page count when available
+- table count
+- figure placeholder count
+- figure placeholder names
 
 ## File Feedback
 
-Whenever a key file is created or updated, tell the user the file name, path, purpose, whether it is a final deliverable, and how it will be used next. After Word export, report the final Word path separately and visibly.
+Whenever a key file is created or updated, tell the user the file name, path, purpose, whether it is a final deliverable, and how it will be used next. This feedback must not replace the substantive in-chat content.
